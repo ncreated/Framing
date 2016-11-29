@@ -25,4 +25,11 @@ class FramingTests: XCTestCase {
         XCTAssertEqual(frame.maxY, 110)
     }
     
+    func testInsetting() {
+        let frame = Frame(width: 100, height: 100)
+        let modified = frame.inset(top: 5, left: 10, bottom: 20, right: 30)
+        
+        XCTAssertEqual(modified, Frame(x: 10, y: 5, width: 60, height: 75))
+    }
+    
 }
