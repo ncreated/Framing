@@ -18,6 +18,11 @@ class FramingTests: XCTestCase {
         XCTAssertEqual(frame.y, 10)
         XCTAssertEqual(frame.width, 100)
         XCTAssertEqual(frame.height, 100)
+        
+        XCTAssertEqual(frame.minX, 10)
+        XCTAssertEqual(frame.minY, 10)
+        XCTAssertEqual(frame.maxX, 110)
+        XCTAssertEqual(frame.maxY, 110)
     }
     
 }
