@@ -10,6 +10,7 @@
 		548627AF1DEE278D001F9174 /* Framing.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 548627A51DEE278D001F9174 /* Framing.framework */; };
 		548627B41DEE278D001F9174 /* FramingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548627B31DEE278D001F9174 /* FramingTests.swift */; };
 		548627B61DEE278D001F9174 /* Framing.h in Headers */ = {isa = PBXBuildFile; fileRef = 548627A81DEE278D001F9174 /* Framing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		548627C01DEE28B0001F9174 /* Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 548627BF1DEE28B0001F9174 /* Frame.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		548627AE1DEE278D001F9174 /* FramingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FramingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		548627B31DEE278D001F9174 /* FramingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramingTests.swift; sourceTree = "<group>"; };
 		548627B51DEE278D001F9174 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		548627BF1DEE28B0001F9174 /* Frame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 			children = (
 				548627A81DEE278D001F9174 /* Framing.h */,
 				548627A91DEE278D001F9174 /* Info.plist */,
+				548627BF1DEE28B0001F9174 /* Frame.swift */,
 			);
 			path = Framing;
 			sourceTree = "<group>";
@@ -148,6 +151,7 @@
 				TargetAttributes = {
 					548627A41DEE278D001F9174 = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 					548627AD1DEE278D001F9174 = {
@@ -196,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				548627C01DEE28B0001F9174 /* Frame.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +325,7 @@
 		548627BA1DEE278D001F9174 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -331,6 +337,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ncreated.Framing;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -338,6 +345,7 @@
 		548627BB1DEE278D001F9174 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -356,6 +364,7 @@
 		548627BD1DEE278D001F9174 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = FramingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ncreated.FramingTests;
@@ -367,6 +376,7 @@
 		548627BE1DEE278D001F9174 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = FramingTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ncreated.FramingTests;
