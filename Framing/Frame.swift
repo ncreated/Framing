@@ -45,6 +45,136 @@ public struct Frame {
     public func offsetBy(x: CGFloat = 0, y: CGFloat = 0) -> Frame {
         return Frame(x: self.x + x, y: self.y + y, width: width, height: height)
     }
+
+    // MARK: Relative position
+    
+    public enum HorizontalAlignment {
+        case left
+        case right
+        case center
+    }
+    
+    public enum VerticalAlignment {
+        case top
+        case bottom
+        case middle
+    }
+    
+    public struct RelativePosition {
+        public struct Below {
+            let frame: Frame
+            let size: CGSize
+            
+            /// Sets horizontal alignment of this frame, relatively to given `frame`
+            public func align(to alignment: HorizontalAlignment) -> Frame {
+                switch alignment {
+                case .left:
+                    return Frame(x: frame.minX, y: frame.maxY, width: size.width, height: size.height)
+                case .right:
+                    return Frame(x: frame.maxX - size.width, y: frame.maxY, width: size.width, height: size.height)
+                case .center:
+                    return Frame(x: frame.minX + (frame.width - size.width) * 0.5,
+                                 y: frame.maxY,
+                                 width: size.width,
+                                 height: size.height)
+                }
+            }
+        }
+        
+        public struct Above {
+            let frame: Frame
+            let size: CGSize
+            
+            /// Sets horizontal alignment of this frame, relatively to given `frame`
+            public func align(to alignment: HorizontalAlignment) -> Frame {
+                switch alignment {
+                case .left:
+                    return Frame(x: frame.minX, y: frame.minY - size.height, width: size.width, height: size.height)
+                case .right:
+                    return Frame(x: frame.maxX - size.width, y: frame.minY - size.height, width: size.width, height: size.height)
+                case .center:
+                    return Frame(x: frame.minX + (frame.width - size.width) * 0.5,
+                                 y: frame.minY - size.height,
+                                 width: size.width,
+                                 height: size.height)
+                }
+            }
+        }
+        
+        public struct Left {
+            let frame: Frame
+            let size: CGSize
+            
+            /// Sets vertical alignment of this frame, relatively to given `frame`
+            public func align(to alignment: VerticalAlignment) -> Frame {
+                switch alignment {
+                case .top:
+                    return Frame(x: frame.minX - size.width, y: frame.minY, width: size.width, height: size.height)
+                case .bottom:
+                    return Frame(x: frame.minX - size.width, y: frame.maxY - size.height, width: size.width, height: size.height)
+                case .middle:
+                    return Frame(x: frame.minX - size.width,
+                                 y: frame.minY + (frame.height - size.height) * 0.5,
+                                 width: size.width,
+                                 height: size.height)
+                }
+            }
+        }
+        
+        public struct Right {
+            let frame: Frame
+            let size: CGSize
+            
+            /// Sets vertical alignment of this frame, relatively to given `frame`
+            public func align(to alignment: VerticalAlignment) -> Frame {
+                switch alignment {
+                case .top:
+                    return Frame(x: frame.maxX, y: frame.minY, width: size.width, height: size.height)
+                case .bottom:
+                    return Frame(x: frame.maxX, y: frame.maxY - size.height, width: size.width, height: size.height)
+                case .middle:
+                    return Frame(x: frame.maxX,
+                                 y: frame.minY + (frame.height - size.height) * 0.5,
+                                 width: size.width,
+                                 height: size.height)
+                }
+            }
+        }
+    }
+    
+    /// Positions this frame below given `frame`.
+    /// **Note:** Must be followed by `align(to alignment: HorizontalAlignment)` to produce a `Frame`.
+    public func putBelow(_ frame: Frame) -> RelativePosition.Below {
+        return RelativePosition.Below(frame: frame, size: size)
+    }
+    
+    /// Positions this frame above given `frame`.
+    /// **Note:** Must be followed by `align(to alignment: HorizontalAlignment)` to produce a `Frame`.
+    public func putAbove(_ frame: Frame) -> RelativePosition.Above {
+        return RelativePosition.Above(frame: frame, size: size)
+    }
+    
+    /// Positions this frame on the left side of given `frame`.
+    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment` to produce a `Frame`.
+    public func putOnLeft(of frame: Frame) -> RelativePosition.Left {
+        return RelativePosition.Left(frame: frame, size: size)
+    }
+    
+    /// Positions this frame on the right side of given `frame`.
+    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment` to produce a `Frame`.
+    public func putOnRight(of frame: Frame) -> RelativePosition.Right {
+        return RelativePosition.Right(frame: frame, size: size)
+    }
+
+    // MARK: CGGeometry conversion
+    
+    var rect: CGRect {
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    var size: CGSize {
+        return CGSize(width: width, height: height)
+    }
 }
 
 
