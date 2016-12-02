@@ -216,11 +216,11 @@ public struct Frame {
 
     // MARK: CGGeometry conversion
     
-    var rect: CGRect {
+    public var rect: CGRect {
         return CGRect(x: x, y: y, width: width, height: height)
     }
     
-    var size: CGSize {
+    public var size: CGSize {
         return CGSize(width: width, height: height)
     }
 }
