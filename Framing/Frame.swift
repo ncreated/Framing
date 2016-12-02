@@ -39,6 +39,12 @@ public struct Frame {
     public func inset(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Frame {
         return Frame(x: x + left, y: y + top, width: width - left - right, height: height - top - bottom)
     }
+
+    // MARK: Offset
+    
+    public func offsetBy(x: CGFloat = 0, y: CGFloat = 0) -> Frame {
+        return Frame(x: self.x + x, y: self.y + y, width: width, height: height)
+    }
 }
 
 

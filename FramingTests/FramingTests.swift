@@ -32,4 +32,10 @@ class FramingTests: XCTestCase {
         XCTAssertEqual(modified, Frame(x: 10, y: 5, width: 60, height: 75))
     }
     
+    func testOffsetting() {
+        let frame = Frame(width: 100, height: 100)
+        let modified = frame.offsetBy(x: 10, y: 20)
+        
+        XCTAssertEqual(modified, Frame(x: 10, y: 20, width: 100, height: 100))
+    }
 }
