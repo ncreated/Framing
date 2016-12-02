@@ -34,6 +34,10 @@ public struct Frame {
         self.init(width: size.width, height: size.height)
     }
     
+    public init(rect: CGRect) {
+        self.init(x: rect.origin.x, y: rect.origin.y, width: rect.width, height: rect.height)
+    }
+    
     // MARK: Inset
     
     public func inset(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Frame {

@@ -23,6 +23,9 @@ class FramingTests: XCTestCase {
         XCTAssertEqual(frame.minY, 10)
         XCTAssertEqual(frame.maxX, 110)
         XCTAssertEqual(frame.maxY, 110)
+        
+        let fromRect = Frame(rect: CGRect(x: 10, y: 10, width: 100, height: 100))
+        XCTAssertEqual(frame, fromRect)
     }
     
     func testInsetting() {
