@@ -165,6 +165,50 @@ public struct Frame {
     public func putOnRight(of frame: Frame) -> RelativePosition.Right {
         return RelativePosition.Right(frame: frame, size: size)
     }
+    
+    // MARK: Distribution
+    
+    public struct Distribution {
+        public struct Horizontal {
+            let frame: Frame
+            let columns: Int
+            
+            /// Returns frame of column with given index.
+            public func take(index: Int) -> Frame {
+                let distributedSize = frame.width / CGFloat(columns)
+                return Frame(x: frame.x + CGFloat(index) * distributedSize,
+                             y: frame.y,
+                             width: distributedSize,
+                             height: frame.height)
+            }
+        }
+        
+        public struct Vertical {
+            let frame: Frame
+            let rows: Int
+            
+            /// Returns frame of row with given index.
+            public func take(index: Int) -> Frame {
+                let distributedSize = frame.height / CGFloat(rows)
+                return Frame(x: frame.x,
+                             y: frame.y + CGFloat(index) * distributedSize,
+                             width: frame.width,
+                             height: distributedSize)
+            }
+        }
+    }
+    
+    /// Distributes this frame into equal columns.
+    /// **Note:** Must be followed by `take(index: Int)` to produce column's `Frame`.
+    public func distributeIntoEqual(columns: Int) -> Distribution.Horizontal {
+        return Distribution.Horizontal(frame: self, columns: columns)
+    }
+    
+    /// Distributes this frame into equal rows.
+    /// **Note:** Must be followed by `take(index: Int)` to produce rows' `Frame`.
+    public func distributeIntoEqual(rows: Int) -> Distribution.Vertical {
+        return Distribution.Vertical(frame: self, rows: rows)
+    }
 
     // MARK: CGGeometry conversion
     

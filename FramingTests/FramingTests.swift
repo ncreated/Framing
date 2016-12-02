@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Framing
+import Framing
 
 class FramingTests: XCTestCase {
     
@@ -93,5 +93,31 @@ class FramingTests: XCTestCase {
         
         let middle = frame.putOnRight(of: base).align(to: .middle)
         XCTAssertEqual(middle, Frame(x: 100, y: 25, width: 50, height: 50))
+    }
+    
+    func testDistributingIntoEqualRows() {
+        let frame = Frame(x: 100, y: 100, width: 120, height: 120)
+        
+        let row0 = frame.distributeIntoEqual(rows: 3).take(index: 0)
+        XCTAssertEqual(row0, Frame(x: 100, y: 100, width: 120, height: 40))
+        
+        let row1 = frame.distributeIntoEqual(rows: 3).take(index: 1)
+        XCTAssertEqual(row1, Frame(x: 100, y: 140, width: 120, height: 40))
+        
+        let row2 = frame.distributeIntoEqual(rows: 3).take(index: 2)
+        XCTAssertEqual(row2, Frame(x: 100, y: 180, width: 120, height: 40))
+    }
+    
+    func testDistributingIntoEqualColumns() {
+        let frame = Frame(x: 100, y: 100, width: 120, height: 120)
+        
+        let column0 = frame.distributeIntoEqual(columns: 3).take(index: 0)
+        XCTAssertEqual(column0, Frame(x: 100, y: 100, width: 40, height: 120))
+        
+        let column1 = frame.distributeIntoEqual(columns: 3).take(index: 1)
+        XCTAssertEqual(column1, Frame(x: 140, y: 100, width: 40, height: 120))
+        
+        let column2 = frame.distributeIntoEqual(columns: 3).take(index: 2)
+        XCTAssertEqual(column2, Frame(x: 180, y: 100, width: 40, height: 120))
     }
 }
