@@ -159,13 +159,13 @@ public struct Frame {
     }
     
     /// Positions this frame on the left side of given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment` to produce a `Frame`.
+    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment)` to produce a `Frame`.
     public func putOnLeft(of frame: Frame) -> RelativePosition.Left {
         return RelativePosition.Left(frame: frame, size: size)
     }
     
     /// Positions this frame on the right side of given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment` to produce a `Frame`.
+    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment)` to produce a `Frame`.
     public func putOnRight(of frame: Frame) -> RelativePosition.Right {
         return RelativePosition.Right(frame: frame, size: size)
     }
