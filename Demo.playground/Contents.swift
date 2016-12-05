@@ -8,9 +8,10 @@ import PlaygroundSupport
 // MARK: Convenience
 
 extension UIView {
-    convenience init(frame: Frame, color: UIColor) {
-        self.init(frame: frame.rect)
-        self.backgroundColor = color
+    func createSubview(withFrame frame: Frame, color: UIColor) {
+        let subview = UIView(frame: frame.rect)
+        subview.backgroundColor = color
+        addSubview(subview)
     }
 }
 
@@ -22,8 +23,10 @@ let white = black.inset(top: 10, left: 10, bottom: 10, right: 10)
 
 // MARK: Drawing
 
-let view = UIView(frame: black, color: .black)
-view.addSubview(UIView(frame: white, color: .white))
+let view = UIView(frame: black.rect)
+view.backgroundColor = .black
+
+view.createSubview(withFrame: white, color: .white)
 
 PlaygroundPage.current.liveView = view
 
