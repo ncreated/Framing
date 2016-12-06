@@ -98,6 +98,38 @@ class FramingTests: XCTestCase {
         XCTAssertEqual(middle, Frame(x: 100, y: 25, width: 50, height: 50))
     }
     
+    func testPositioningInside() {
+        let base = Frame(width: 100, height: 100)
+        let frame = Frame(width: 50, height: 50)
+        
+        let topLeft = frame.putInside(base).align(to: .topLeft)
+        XCTAssertEqual(topLeft, Frame(x: 0, y: 0, width: 50, height: 50))
+        
+        let topCenter = frame.putInside(base).align(to: .topCenter)
+        XCTAssertEqual(topCenter, Frame(x: 25, y: 0, width: 50, height: 50))
+        
+        let topRight = frame.putInside(base).align(to: .topRight)
+        XCTAssertEqual(topRight, Frame(x: 50, y: 0, width: 50, height: 50))
+        
+        let middleLeft = frame.putInside(base).align(to: .middleLeft)
+        XCTAssertEqual(middleLeft, Frame(x: 0, y: 25, width: 50, height: 50))
+        
+        let middleCenter = frame.putInside(base).align(to: .middleCenter)
+        XCTAssertEqual(middleCenter, Frame(x: 25, y: 25, width: 50, height: 50))
+        
+        let middleRight = frame.putInside(base).align(to: .middleRight)
+        XCTAssertEqual(middleRight, Frame(x: 50, y: 25, width: 50, height: 50))
+        
+        let bottomLeft = frame.putInside(base).align(to: .bottomLeft)
+        XCTAssertEqual(bottomLeft, Frame(x: 0, y: 50, width: 50, height: 50))
+        
+        let bottomCenter = frame.putInside(base).align(to: .bottomCenter)
+        XCTAssertEqual(bottomCenter, Frame(x: 25, y: 50, width: 50, height: 50))
+        
+        let bottomRight = frame.putInside(base).align(to: .bottomRight)
+        XCTAssertEqual(bottomRight, Frame(x: 50, y: 50, width: 50, height: 50))
+    }
+    
     func testDistributingIntoEqualRows() {
         let frame = Frame(x: 100, y: 100, width: 120, height: 120)
         

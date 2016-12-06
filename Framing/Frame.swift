@@ -64,6 +64,46 @@ public struct Frame {
         case middle
     }
     
+    public enum InsideAlignment {
+        case topLeft
+        case topCenter
+        case topRight
+        case middleLeft
+        case middleCenter
+        case middleRight
+        case bottomLeft
+        case bottomCenter
+        case bottomRight
+        
+        fileprivate var horizontal: HorizontalAlignment {
+            switch self {
+            case .topLeft:       return .left
+            case .topCenter:     return .center
+            case .topRight:      return .right
+            case .middleLeft:    return .left
+            case .middleCenter:  return .center
+            case .middleRight:   return .right
+            case .bottomLeft:    return .left
+            case .bottomCenter:  return .center
+            case .bottomRight:   return .right
+            }
+        }
+        
+        fileprivate var vertical: VerticalAlignment {
+            switch self {
+            case .topLeft:       return .top
+            case .topCenter:     return .top
+            case .topRight:      return .top
+            case .middleLeft:    return .middle
+            case .middleCenter:  return .middle
+            case .middleRight:   return .middle
+            case .bottomLeft:    return .bottom
+            case .bottomCenter:  return .bottom
+            case .bottomRight:   return .bottom
+            }
+        }
+    }
+    
     public struct RelativePosition {
         public struct Below {
             let frame: Frame
@@ -144,6 +184,32 @@ public struct Frame {
                 }
             }
         }
+        
+        public struct Inside {
+            let frame: Frame
+            let size: CGSize
+         
+            /// Sets vertical & horizontal alignment of this frame, relatively to given `frame`
+            public func align(to alignment: InsideAlignment) -> Frame {
+                let x: CGFloat = {
+                    switch alignment.horizontal {
+                    case .left:     return frame.minX
+                    case .right:    return frame.maxX - size.width
+                    case .center:   return frame.minX + (frame.width - size.width) * 0.5
+                    }
+                }()
+                
+                let y: CGFloat = {
+                    switch alignment.vertical {
+                    case .top:      return frame.minY
+                    case .bottom:   return frame.maxY - size.height
+                    case .middle:   return frame.minY + (frame.height - size.height) * 0.5
+                    }
+                }()
+                
+                return Frame(x: x, y: y, width: size.width, height: size.height)
+            }
+        }
     }
     
     /// Positions this frame below given `frame`.
@@ -168,6 +234,12 @@ public struct Frame {
     /// **Note:** Must be followed by `align(to alignment: VerticalAlignment)` to produce a `Frame`.
     public func putOnRight(of frame: Frame) -> RelativePosition.Right {
         return RelativePosition.Right(frame: frame, size: size)
+    }
+    
+    /// Positions this frame inside given `frame`.
+    /// **Note:** Must be followed by `align(to alignment: InsideAlignment)` to produce a `Frame`.
+    public func putInside(_ frame: Frame) -> RelativePosition.Inside {
+        return RelativePosition.Inside(frame: frame, size: size)
     }
     
     // MARK: Division
