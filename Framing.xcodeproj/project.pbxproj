@@ -31,6 +31,7 @@
 		548627B31DEE278D001F9174 /* FramingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramingTests.swift; sourceTree = "<group>"; };
 		548627B51DEE278D001F9174 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		548627BF1DEE28B0001F9174 /* Frame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Frame.swift; sourceTree = "<group>"; };
+		54C2264D1DF234E60099F2AA /* Demo.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Demo.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +56,7 @@
 		5486279B1DEE278D001F9174 = {
 			isa = PBXGroup;
 			children = (
+				54C2264D1DF234E60099F2AA /* Demo.playground */,
 				548627A71DEE278D001F9174 /* Framing */,
 				548627B21DEE278D001F9174 /* FramingTests */,
 				548627A61DEE278D001F9174 /* Products */,
@@ -404,6 +406,7 @@
 				548627BB1DEE278D001F9174 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		548627BC1DEE278D001F9174 /* Build configuration list for PBXNativeTarget "FramingTests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +415,7 @@
 				548627BE1DEE278D001F9174 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
