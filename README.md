@@ -94,6 +94,13 @@ frame.divideIntoEqual(rows: 5).take(index: 1)
 ---
 Missing some API? Open a Pull Request or fill in the Issue.
 
+## How can you use `Framing`?
+
+Just use CocoaPods:
+```
+pod 'Framing'
+```
+
 ## License
 
 `Framing` is released under the MIT license. See the LICENSE file for more details.
