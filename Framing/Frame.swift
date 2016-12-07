@@ -37,18 +37,6 @@ public struct Frame {
     public init(rect: CGRect) {
         self.init(x: rect.origin.x, y: rect.origin.y, width: rect.width, height: rect.height)
     }
-    
-    // MARK: Inset
-    
-    public func inset(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Frame {
-        return Frame(x: x + left, y: y + top, width: width - left - right, height: height - top - bottom)
-    }
-
-    // MARK: Offset
-    
-    public func offsetBy(x: CGFloat = 0, y: CGFloat = 0) -> Frame {
-        return Frame(x: self.x + x, y: self.y + y, width: width, height: height)
-    }
 
     // MARK: Relative position
     
@@ -75,7 +63,7 @@ public struct Frame {
         case bottomCenter
         case bottomRight
         
-        fileprivate var horizontal: HorizontalAlignment {
+        internal var horizontal: HorizontalAlignment {
             switch self {
             case .topLeft:       return .left
             case .topCenter:     return .center
@@ -89,7 +77,7 @@ public struct Frame {
             }
         }
         
-        fileprivate var vertical: VerticalAlignment {
+        internal var vertical: VerticalAlignment {
             switch self {
             case .topLeft:       return .top
             case .topCenter:     return .top
@@ -104,13 +92,15 @@ public struct Frame {
         }
     }
     
-    public struct RelativePosition {
-        public struct Below {
+    // MARK: Private
+    
+    private struct RelativePosition {
+        struct Below {
             let frame: Frame
             let size: CGSize
             
             /// Sets horizontal alignment of this frame, relatively to given `frame`
-            public func align(to alignment: HorizontalAlignment) -> Frame {
+            func align(to alignment: HorizontalAlignment) -> Frame {
                 switch alignment {
                 case .left:
                     return Frame(x: frame.minX, y: frame.maxY, width: size.width, height: size.height)
@@ -125,12 +115,12 @@ public struct Frame {
             }
         }
         
-        public struct Above {
+        struct Above {
             let frame: Frame
             let size: CGSize
             
             /// Sets horizontal alignment of this frame, relatively to given `frame`
-            public func align(to alignment: HorizontalAlignment) -> Frame {
+            func align(to alignment: HorizontalAlignment) -> Frame {
                 switch alignment {
                 case .left:
                     return Frame(x: frame.minX, y: frame.minY - size.height, width: size.width, height: size.height)
@@ -145,12 +135,12 @@ public struct Frame {
             }
         }
         
-        public struct Left {
+        struct Left {
             let frame: Frame
             let size: CGSize
             
             /// Sets vertical alignment of this frame, relatively to given `frame`
-            public func align(to alignment: VerticalAlignment) -> Frame {
+            func align(to alignment: VerticalAlignment) -> Frame {
                 switch alignment {
                 case .top:
                     return Frame(x: frame.minX - size.width, y: frame.minY, width: size.width, height: size.height)
@@ -165,12 +155,12 @@ public struct Frame {
             }
         }
         
-        public struct Right {
+        struct Right {
             let frame: Frame
             let size: CGSize
             
             /// Sets vertical alignment of this frame, relatively to given `frame`
-            public func align(to alignment: VerticalAlignment) -> Frame {
+            func align(to alignment: VerticalAlignment) -> Frame {
                 switch alignment {
                 case .top:
                     return Frame(x: frame.maxX, y: frame.minY, width: size.width, height: size.height)
@@ -185,12 +175,12 @@ public struct Frame {
             }
         }
         
-        public struct Inside {
+        struct Inside {
             let frame: Frame
             let size: CGSize
          
             /// Sets vertical & horizontal alignment of this frame, relatively to given `frame`
-            public func align(to alignment: InsideAlignment) -> Frame {
+            func align(to alignment: InsideAlignment) -> Frame {
                 let x: CGFloat = {
                     switch alignment.horizontal {
                     case .left:     return frame.minX
@@ -212,45 +202,13 @@ public struct Frame {
         }
     }
     
-    /// Positions this frame below given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: HorizontalAlignment)` to produce a `Frame`.
-    public func putBelow(_ frame: Frame) -> RelativePosition.Below {
-        return RelativePosition.Below(frame: frame, size: size)
-    }
-    
-    /// Positions this frame above given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: HorizontalAlignment)` to produce a `Frame`.
-    public func putAbove(_ frame: Frame) -> RelativePosition.Above {
-        return RelativePosition.Above(frame: frame, size: size)
-    }
-    
-    /// Positions this frame on the left side of given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment)` to produce a `Frame`.
-    public func putOnLeft(of frame: Frame) -> RelativePosition.Left {
-        return RelativePosition.Left(frame: frame, size: size)
-    }
-    
-    /// Positions this frame on the right side of given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: VerticalAlignment)` to produce a `Frame`.
-    public func putOnRight(of frame: Frame) -> RelativePosition.Right {
-        return RelativePosition.Right(frame: frame, size: size)
-    }
-    
-    /// Positions this frame inside given `frame`.
-    /// **Note:** Must be followed by `align(to alignment: InsideAlignment)` to produce a `Frame`.
-    public func putInside(_ frame: Frame) -> RelativePosition.Inside {
-        return RelativePosition.Inside(frame: frame, size: size)
-    }
-    
-    // MARK: Division
-    
-    public struct Division {
-        public struct Horizontal {
+    private struct Division {
+        struct Horizontal {
             let frame: Frame
             let columns: Int
             
             /// Returns frame of column with given index.
-            public func take(index: Int) -> Frame {
+            func take(index: Int) -> Frame {
                 let dividedSize = frame.width / CGFloat(columns)
                 return Frame(x: frame.x + CGFloat(index) * dividedSize,
                              y: frame.y,
@@ -259,12 +217,12 @@ public struct Frame {
             }
         }
         
-        public struct Vertical {
+        struct Vertical {
             let frame: Frame
             let rows: Int
             
             /// Returns frame of row with given index.
-            public func take(index: Int) -> Frame {
+            func take(index: Int) -> Frame {
                 let dividedSize = frame.height / CGFloat(rows)
                 return Frame(x: frame.x,
                              y: frame.y + CGFloat(index) * dividedSize,
@@ -274,16 +232,48 @@ public struct Frame {
         }
     }
     
-    /// Divides this frame into equal columns.
-    /// **Note:** Must be followed by `take(index: Int)` to produce column's `Frame`.
-    public func divideIntoEqual(columns: Int) -> Division.Horizontal {
-        return Division.Horizontal(frame: self, columns: columns)
+    // MARK: Inset
+    
+    public func inset(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Frame {
+        return Frame(x: x + left, y: y + top, width: width - left - right, height: height - top - bottom)
     }
     
-    /// Divides this frame into equal rows.
-    /// **Note:** Must be followed by `take(index: Int)` to produce rows' `Frame`.
-    public func divideIntoEqual(rows: Int) -> Division.Vertical {
-        return Division.Vertical(frame: self, rows: rows)
+    // MARK: Offset
+    
+    public func offsetBy(x: CGFloat = 0, y: CGFloat = 0) -> Frame {
+        return Frame(x: self.x + x, y: self.y + y, width: width, height: height)
+    }
+    
+    // MARK: Relative Position
+    
+    public func putBelow(_ frame: Frame, alignTo alignment: HorizontalAlignment = .center) -> Frame {
+        return RelativePosition.Below(frame: frame, size: size).align(to: alignment)
+    }
+    
+    public func putAbove(_ frame: Frame, alignTo alignment: HorizontalAlignment = .center) -> Frame {
+        return RelativePosition.Above(frame: frame, size: size).align(to: alignment)
+    }
+    
+    public func putOnLeft(of frame: Frame, alignTo alignment: VerticalAlignment = .middle) -> Frame {
+        return RelativePosition.Left(frame: frame, size: size).align(to: alignment)
+    }
+    
+    public func putOnRight(of frame: Frame, alignTo alignment: VerticalAlignment = .middle) -> Frame {
+        return RelativePosition.Right(frame: frame, size: size).align(to: alignment)
+    }
+    
+    public func putInside(_ frame: Frame, alignTo alignment: InsideAlignment = .middleCenter) -> Frame {
+        return RelativePosition.Inside(frame: frame, size: size).align(to: alignment)
+    }
+    
+    // MARK: Division
+    
+    public func divideIntoEqual(columns: Int, take index: Int) -> Frame {
+        return Division.Horizontal(frame: self, columns: columns).take(index: index)
+    }
+
+    public func divideIntoEqual(rows: Int, take index: Int) -> Frame {
+        return Division.Vertical(frame: self, rows: rows).take(index: index)
     }
 
     // MARK: CGGeometry conversion

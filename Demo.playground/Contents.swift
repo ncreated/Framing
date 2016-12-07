@@ -20,20 +20,17 @@ extension UIView {
 let background = Frame(width: 300, height: 300)
 
 let bottomLine1 = Frame(width: 300, height: 20)
-    .putInside(background).align(to: .bottomCenter)
+    .putInside(background, alignTo: .bottomCenter)
 
 let bottomLine2 = Frame(width: 300, height: 30)
     .putAbove(bottomLine1)
-    .align(to: .center)
 
 let F1 = Frame(width: 50, height: 180)
-    .putInside(background)
-    .align(to: .middleLeft)
+    .putInside(background, alignTo: .middleLeft)
     .offsetBy(x: 90, y: -10)
 
 let F2 = Frame(width: 70, height: 50)
-    .putOnRight(of: F1)
-    .align(to: .top)
+    .putOnRight(of: F1, alignTo: .top)
 
 let F3 = F2.offsetBy(y: 70)
 
