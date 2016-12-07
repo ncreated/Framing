@@ -9,14 +9,7 @@
 import Foundation
 
 
-/// Operations that can proceed condition
-protocol ConditionProceedingOperations {
-    func inset(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) -> Frame
-    func offsetBy(x: CGFloat, y: CGFloat) -> Frame
-}
-
-
-public struct Frame: ConditionProceedingOperations {
+public struct Frame {
     public let x: CGFloat
     public let y: CGFloat
     public let width: CGFloat
@@ -291,33 +284,6 @@ public struct Frame: ConditionProceedingOperations {
     /// **Note:** Must be followed by `take(index: Int)` to produce rows' `Frame`.
     public func divideIntoEqual(rows: Int) -> Division.Vertical {
         return Division.Vertical(frame: self, rows: rows)
-    }
-    
-    // MARK: Conditions
-    
-    public struct ConditionProceedingFrame: ConditionProceedingOperations {
-        let frameBeforeCondition: Frame
-        let conditionResult: Bool
-        
-        public func inset(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Frame {
-            if conditionResult {
-                return frameBeforeCondition.inset(top: top, left: left, bottom: bottom, right: right)
-            } else {
-                return frameBeforeCondition
-            }
-        }
-        
-        public func offsetBy(x: CGFloat = 0, y: CGFloat = 0) -> Frame {
-            if conditionResult {
-                return frameBeforeCondition.offsetBy(x: x, y: y)
-            } else {
-                return frameBeforeCondition
-            }
-        }
-    }
-    
-    public func `if`(_ condition: Bool) -> ConditionProceedingFrame {
-        return ConditionProceedingFrame(frameBeforeCondition: self, conditionResult: condition)
     }
 
     // MARK: CGGeometry conversion
