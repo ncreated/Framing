@@ -19,37 +19,30 @@ extension UIView {
 
 let background = Frame(width: 300, height: 300)
 
-let bottomLine1 = Frame(width: 300, height: 20)
-    .putInside(background).align(to: .bottomCenter)
-
-let bottomLine2 = Frame(width: 300, height: 30)
-    .putAbove(bottomLine1)
-    .align(to: .center)
-
-let F1 = Frame(width: 50, height: 180)
+let green = Frame(width: 200, height: 40)
     .putInside(background)
-    .align(to: .middleLeft)
-    .offsetBy(x: 90, y: -10)
+    .align(to: .topCenter)
+    .offsetBy(y: 45)
 
-let F2 = Frame(width: 70, height: 50)
-    .putOnRight(of: F1)
-    .align(to: .top)
+let yellowSize = CGSize(width: 200, height: 40)
+let yellow = Frame(ofSize: yellowSize)
+    .putBelow(green)
+    .align(to: .center)
+        .if(yellowSize.height > 0)
+        .offsetBy(y: 15)
 
-let F3 = F2.offsetBy(y: 70)
+let blue = Frame(width: 200, height: 40)
+    .putBelow(yellow)
+    .align(to: .center)
+    .offsetBy(y: 15)
 
 // MARK: Drawing
 
 let view = UIView(frame: background.rect)
 view.backgroundColor = #colorLiteral(red: 0.9966825843, green: 0.9966985583, blue: 0.8922771811, alpha: 1)
 
-view.createSubview(withFrame: bottomLine1, color: #colorLiteral(red: 0.1718324125, green: 0.6832917333, blue: 0.4237753749, alpha: 1))
-view.createSubview(withFrame: bottomLine2, color: #colorLiteral(red: 0.6420532465, green: 0.8733261228, blue: 0.5131177902, alpha: 1))
-
-view.createSubview(withFrame: F1, color: #colorLiteral(red: 0.1771433353, green: 0.2114563584, blue: 0.3061545789, alpha: 1))
-view.createSubview(withFrame: F2, color: #colorLiteral(red: 0.1771433353, green: 0.2114563584, blue: 0.3061545789, alpha: 1))
-view.createSubview(withFrame: F3, color: #colorLiteral(red: 0.1771433353, green: 0.2114563584, blue: 0.3061545789, alpha: 1))
+view.createSubview(withFrame: green, color: #colorLiteral(red: 0.1718324125, green: 0.6832917333, blue: 0.4237753749, alpha: 1))
+view.createSubview(withFrame: yellow, color: #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1))
+view.createSubview(withFrame: blue, color: #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1))
 
 PlaygroundPage.current.liveView = view
-
-
-
