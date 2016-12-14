@@ -3,30 +3,34 @@
 </p>
 
 # Framing
-Swifty approach to declarative frame layouts.
+Swifty approach to defining frame layouts.
+
+## Installation
+
+`Framing` supports CocoaPods:
+```
+pod 'Framing'
+```
 
 ## What is `Framing`?
 
-`Framing` is a tiny framework for defining view frames in more declarative way. Think of it as a simple wrapper over `CGRect` that can save you time spend on math calculations when positioning view frames. Look:
+`Framing` is a tiny framework for defining view frames in more Swifty way. Think of it as a simple wrapper over `CGRect` that can save you time spend on math calculations when positioning view frames. Look:
 
 ```swift
 let background = Frame(width: 300, height: 300)
 
 let bottomLine1 = Frame(width: 300, height: 20)
-    .putInside(background).align(to: .bottomCenter)
+    .putInside(background, alignTo: .bottomCenter)
 
 let bottomLine2 = Frame(width: 300, height: 30)
     .putAbove(bottomLine1)
-    .align(to: .center)
 
 let F1 = Frame(width: 50, height: 180)
-    .putInside(background)
-    .align(to: .middleLeft)
+    .putInside(background, alignTo: .middleLeft)
     .offsetBy(x: 90, y: -10)
 
 let F2 = Frame(width: 70, height: 50)
-    .putOnRight(of: F1)
-    .align(to: .top)
+    .putOnRight(of: F1, alignTo: .top)
 
 let F3 = F2.offsetBy(y: 70)
 ```
@@ -42,8 +46,6 @@ e.g. `greenView.frame = bottomLine2.rect`
 It's not an animal :pig: or UI / Layout framework. It doesn't import `UIKit` anywhere.
 
 ## What you can do with `Framing`?
-Have a quick look at `Framing` APIs.
-
 This will return frame moved by `10pt` in both directions:
 ```swift
 frame.offsetBy(x: 10, y: 10)
@@ -56,50 +58,56 @@ frame.inset(top: 5, left: 5, bottom: 5, right: 5)
 
 This will return frame that is put **above/below** `base` frame:
 ```swift
-frame.putAbove(base).align(to: .left)
-frame.putAbove(base).align(to: .right)
-frame.putAbove(base).align(to: .center)
-frame.putBelow(...) // ...
+frame.putAbove(base, alignTo: .left)
+frame.putAbove(base, alignTo: .right)
+frame.putAbove(base, alignTo: .center)
+frame.putBelow(..., alignTo: ...) // ...
 ```
 
-Note, that you must provide `.align(to: ...)` information, so `Framing` knows how to position frame horizontaly. The same applies to **left/right** positioning:
+The same for **left/right** positioning:
 ```swift
-frame.putOnLeft(of: base).align(to: .top)
-frame.putOnLeft(of: base).align(to: .bottom)
-frame.putOnLeft(of: base).align(to: .middle)
-frame.putOnRight(of: ...) // ...
+frame.putOnLeft(of: base, alignTo: .top)
+frame.putOnLeft(of: base, alignTo: .bottom)
+frame.putOnLeft(of: base, alignTo: .middle)
+frame.putOnRight(of: ..., alignTo: ...) // ...
 ```
 
 This will return frame that is put **inside** `base` frame:
 ```swift
-frame.putInside(base).align(to: .topLeft)
-frame.putInside(base).align(to: .topCenter)
+frame.putInside(base, alignTo: .topLeft)
+frame.putInside(base, alignTo: .topCenter)
 ...
-frame.putInside(base).align(to: .middleCenter) // centers `frame` inside `base`
+frame.putInside(base, alignTo: .middleCenter) // centers `frame` inside `base`
 ...
 ```
 
-Similary, `.align(to: ..)` information is needed to align edges of both frames.
-
 This will divide frame into 5 columns and return 2nd column frame:
 ```swift
-frame.divideIntoEqual(columns: 5).take(index: 1)
+frame.divideIntoEqual(columns: 5, take: 1)
 ```
 
 The same for rows:
 ```swift
-frame.divideIntoEqual(rows: 5).take(index: 1)
+frame.divideIntoEqual(rows: 5, take: 1)
+```
+
+It's possible to apply transforms conditionally using only `Framing` api:
+```swift
+let shouldBeOffsetted: Bool = ...
+frame.if(condition: shouldBeOffsetted,
+         then: { $0.offsetBy(x: 10).inset(top: 5) },
+         else: { $0.inset(top: 5) })
+         
+// Or simpler:
+frame.inset(top: 5)
+     .if(shouldBeOffsetted) { $0.offsetBy(x: 10) }
 ```
 
 ---
 Missing some API? Open a Pull Request or fill in the Issue.
 
-## How can you use `Framing`?
-
-Just use CocoaPods:
-```
-pod 'Framing'
-```
+## `Framing` is still in development
+This library is still in development, so incompatible API changes are possible until it reaches `1.0.0`.
 
 ## License
 
