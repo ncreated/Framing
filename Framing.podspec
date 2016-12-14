@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "Framing"
-  s.version      = "0.1.2"
-  s.summary      = "Swifty approach to declarative frame layouts"
+  s.version      = "0.2.0"
+  s.summary      = "Swifty approach to defining frame layouts"
   s.homepage     = "https://github.com/ncreated/Framing"
   s.license      = { :type => "MIT", :file => "LICENSE" }
 

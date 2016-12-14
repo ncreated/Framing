@@ -46,13 +46,13 @@ class FramingTests: XCTestCase {
         let base = Frame(width: 100, height: 100)
         let frame = Frame(width: 50, height: 50)
         
-        let left = frame.putAbove(base).align(to: .left)
+        let left = frame.putAbove(base, alignTo: .left)
         XCTAssertEqual(left, Frame(x: 0, y: -50, width: 50, height: 50))
         
-        let right = frame.putAbove(base).align(to: .right)
+        let right = frame.putAbove(base, alignTo: .right)
         XCTAssertEqual(right, Frame(x: 50, y: -50, width: 50, height: 50))
         
-        let center = frame.putAbove(base).align(to: .center)
+        let center = frame.putAbove(base, alignTo: .center)
         XCTAssertEqual(center, Frame(x: 25, y: -50, width: 50, height: 50))
     }
     
@@ -60,13 +60,13 @@ class FramingTests: XCTestCase {
         let base = Frame(width: 100, height: 100)
         let frame = Frame(width: 50, height: 50)
         
-        let left = frame.putBelow(base).align(to: .left)
+        let left = frame.putBelow(base, alignTo: .left)
         XCTAssertEqual(left, Frame(x: 0, y: 100, width: 50, height: 50))
         
-        let right = frame.putBelow(base).align(to: .right)
+        let right = frame.putBelow(base, alignTo: .right)
         XCTAssertEqual(right, Frame(x: 50, y: 100, width: 50, height: 50))
         
-        let center = frame.putBelow(base).align(to: .center)
+        let center = frame.putBelow(base, alignTo: .center)
         XCTAssertEqual(center, Frame(x: 25, y: 100, width: 50, height: 50))
     }
     
@@ -74,13 +74,13 @@ class FramingTests: XCTestCase {
         let base = Frame(width: 100, height: 100)
         let frame = Frame(width: 50, height: 50)
         
-        let top = frame.putOnLeft(of: base).align(to: .top)
+        let top = frame.putOnLeft(of: base, alignTo: .top)
         XCTAssertEqual(top, Frame(x: -50, y: 0, width: 50, height: 50))
         
-        let bottom = frame.putOnLeft(of: base).align(to: .bottom)
+        let bottom = frame.putOnLeft(of: base, alignTo: .bottom)
         XCTAssertEqual(bottom, Frame(x: -50, y: 50, width: 50, height: 50))
         
-        let middle = frame.putOnLeft(of: base).align(to: .middle)
+        let middle = frame.putOnLeft(of: base, alignTo: .middle)
         XCTAssertEqual(middle, Frame(x: -50, y: 25, width: 50, height: 50))
     }
     
@@ -88,13 +88,13 @@ class FramingTests: XCTestCase {
         let base = Frame(width: 100, height: 100)
         let frame = Frame(width: 50, height: 50)
         
-        let top = frame.putOnRight(of: base).align(to: .top)
+        let top = frame.putOnRight(of: base, alignTo: .top)
         XCTAssertEqual(top, Frame(x: 100, y: 0, width: 50, height: 50))
         
-        let bottom = frame.putOnRight(of: base).align(to: .bottom)
+        let bottom = frame.putOnRight(of: base, alignTo: .bottom)
         XCTAssertEqual(bottom, Frame(x: 100, y: 50, width: 50, height: 50))
         
-        let middle = frame.putOnRight(of: base).align(to: .middle)
+        let middle = frame.putOnRight(of: base, alignTo: .middle)
         XCTAssertEqual(middle, Frame(x: 100, y: 25, width: 50, height: 50))
     }
     
@@ -102,57 +102,72 @@ class FramingTests: XCTestCase {
         let base = Frame(width: 100, height: 100)
         let frame = Frame(width: 50, height: 50)
         
-        let topLeft = frame.putInside(base).align(to: .topLeft)
+        let topLeft = frame.putInside(base, alignTo: .topLeft)
         XCTAssertEqual(topLeft, Frame(x: 0, y: 0, width: 50, height: 50))
         
-        let topCenter = frame.putInside(base).align(to: .topCenter)
+        let topCenter = frame.putInside(base, alignTo: .topCenter)
         XCTAssertEqual(topCenter, Frame(x: 25, y: 0, width: 50, height: 50))
         
-        let topRight = frame.putInside(base).align(to: .topRight)
+        let topRight = frame.putInside(base, alignTo: .topRight)
         XCTAssertEqual(topRight, Frame(x: 50, y: 0, width: 50, height: 50))
         
-        let middleLeft = frame.putInside(base).align(to: .middleLeft)
+        let middleLeft = frame.putInside(base, alignTo: .middleLeft)
         XCTAssertEqual(middleLeft, Frame(x: 0, y: 25, width: 50, height: 50))
         
-        let middleCenter = frame.putInside(base).align(to: .middleCenter)
+        let middleCenter = frame.putInside(base, alignTo: .middleCenter)
         XCTAssertEqual(middleCenter, Frame(x: 25, y: 25, width: 50, height: 50))
         
-        let middleRight = frame.putInside(base).align(to: .middleRight)
+        let middleRight = frame.putInside(base, alignTo: .middleRight)
         XCTAssertEqual(middleRight, Frame(x: 50, y: 25, width: 50, height: 50))
         
-        let bottomLeft = frame.putInside(base).align(to: .bottomLeft)
+        let bottomLeft = frame.putInside(base, alignTo: .bottomLeft)
         XCTAssertEqual(bottomLeft, Frame(x: 0, y: 50, width: 50, height: 50))
         
-        let bottomCenter = frame.putInside(base).align(to: .bottomCenter)
+        let bottomCenter = frame.putInside(base, alignTo: .bottomCenter)
         XCTAssertEqual(bottomCenter, Frame(x: 25, y: 50, width: 50, height: 50))
         
-        let bottomRight = frame.putInside(base).align(to: .bottomRight)
+        let bottomRight = frame.putInside(base, alignTo: .bottomRight)
         XCTAssertEqual(bottomRight, Frame(x: 50, y: 50, width: 50, height: 50))
     }
     
-    func testDistributingIntoEqualRows() {
+    func testDividingIntoEqualRows() {
         let frame = Frame(x: 100, y: 100, width: 120, height: 120)
         
-        let row0 = frame.divideIntoEqual(rows: 3).take(index: 0)
+        let row0 = frame.divideIntoEqual(rows: 3, take: 0)
         XCTAssertEqual(row0, Frame(x: 100, y: 100, width: 120, height: 40))
         
-        let row1 = frame.divideIntoEqual(rows: 3).take(index: 1)
+        let row1 = frame.divideIntoEqual(rows: 3, take: 1)
         XCTAssertEqual(row1, Frame(x: 100, y: 140, width: 120, height: 40))
         
-        let row2 = frame.divideIntoEqual(rows: 3).take(index: 2)
+        let row2 = frame.divideIntoEqual(rows: 3, take: 2)
         XCTAssertEqual(row2, Frame(x: 100, y: 180, width: 120, height: 40))
     }
     
-    func testDistributingIntoEqualColumns() {
+    func testDividingIntoEqualColumns() {
         let frame = Frame(x: 100, y: 100, width: 120, height: 120)
         
-        let column0 = frame.divideIntoEqual(columns: 3).take(index: 0)
+        let column0 = frame.divideIntoEqual(columns: 3, take: 0)
         XCTAssertEqual(column0, Frame(x: 100, y: 100, width: 40, height: 120))
         
-        let column1 = frame.divideIntoEqual(columns: 3).take(index: 1)
+        let column1 = frame.divideIntoEqual(columns: 3, take: 1)
         XCTAssertEqual(column1, Frame(x: 140, y: 100, width: 40, height: 120))
         
-        let column2 = frame.divideIntoEqual(columns: 3).take(index: 2)
+        let column2 = frame.divideIntoEqual(columns: 3, take: 2)
         XCTAssertEqual(column2, Frame(x: 180, y: 100, width: 40, height: 120))
+    }
+    
+    func testConditioning() {
+        let frame = Frame(width: 100, height: 100)
+        let modified = frame.if(condition: true, then: { $0.offsetBy(x: 10).inset(top: 5) })
+        
+        XCTAssertEqual(modified, Frame(x: 10, y: 5, width: 100, height: 95))
+        
+        let notModified = frame.if(false) { $0.offsetBy(x: 10).inset(top: 5) }
+        
+        XCTAssertEqual(notModified, frame)
+        
+        let notModified2 = frame.if(condition: false, then: { $0.offsetBy(x: 10).inset(top: 5) }, else: { $0.offsetBy(x: -10).inset(top: 5) })
+        
+        XCTAssertEqual(notModified2, Frame(x: -10, y: 5, width: 100, height: 95))
     }
 }
