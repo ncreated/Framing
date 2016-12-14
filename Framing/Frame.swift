@@ -275,6 +275,22 @@ public struct Frame {
     public func divideIntoEqual(rows: Int, take index: Int) -> Frame {
         return Division.Vertical(frame: self, rows: rows).take(index: index)
     }
+    
+    // MARK: Conditional Operations
+
+    public func `if`(_ condition: Bool, then transform: (Frame) -> Frame) -> Frame {
+        return `if`(condition: condition, then: transform, else: nil)
+    }
+    
+    public func `if`(condition: Bool, then transform: (Frame) -> Frame, else alternativeTransform: ((Frame) -> Frame)? = nil) -> Frame {
+        if condition {
+            return transform(self)
+        } else if let alternativeTransform = alternativeTransform {
+            return alternativeTransform(self)
+        } else {
+            return self
+        }
+    }
 
     // MARK: CGGeometry conversion
     

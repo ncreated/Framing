@@ -155,4 +155,19 @@ class FramingTests: XCTestCase {
         let column2 = frame.divideIntoEqual(columns: 3, take: 2)
         XCTAssertEqual(column2, Frame(x: 180, y: 100, width: 40, height: 120))
     }
+    
+    func testConditioning() {
+        let frame = Frame(width: 100, height: 100)
+        let modified = frame.if(condition: true, then: { $0.offsetBy(x: 10).inset(top: 5) })
+        
+        XCTAssertEqual(modified, Frame(x: 10, y: 5, width: 100, height: 95))
+        
+        let notModified = frame.if(false) { $0.offsetBy(x: 10).inset(top: 5) }
+        
+        XCTAssertEqual(notModified, frame)
+        
+        let notModified2 = frame.if(condition: false, then: { $0.offsetBy(x: 10).inset(top: 5) }, else: { $0.offsetBy(x: -10).inset(top: 5) })
+        
+        XCTAssertEqual(notModified2, Frame(x: -10, y: 5, width: 100, height: 95))
+    }
 }
