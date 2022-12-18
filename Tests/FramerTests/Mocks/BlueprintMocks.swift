@@ -66,7 +66,7 @@ extension BlueprintFrameAnnotation: AnyMockable, RandomMockable {
     }
 
     static func mockWith(
-        text: NSString = .mockAny(),
+        text: String = .mockAny(),
         size: AnnotationSize = .mockAny(),
         position: AnnotationPosition = .mockAny(),
         alignment: AnnotationAlignment = .mockAny()
@@ -138,7 +138,7 @@ extension BlueprintFrameContent: AnyMockable, RandomMockable {
     }
 
     static func mockWith(
-        text: NSString = .mockAny(),
+        text: String = .mockAny(),
         textColor: UIColor = .mockAny(),
         font: UIFont = .mockAny()
     ) -> BlueprintFrameContent {

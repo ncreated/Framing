@@ -73,12 +73,12 @@ public struct BlueprintFrameStyle: Equatable {
 }
 
 public struct BlueprintFrameContent: Equatable {
-    public var text: NSString
+    public var text: String
     public var textColor: UIColor
     public var font: UIFont
 
     public init(
-        text: NSString,
+        text: String,
         textColor: UIColor,
         font: UIFont
     ) {
@@ -89,7 +89,7 @@ public struct BlueprintFrameContent: Equatable {
 }
 
 public struct BlueprintFrameAnnotation: Equatable {
-    public var text: NSString
+    public var text: String
     public var size: AnnotationSize
     public var position: AnnotationPosition
     public var alignment: AnnotationAlignment
@@ -115,7 +115,7 @@ public struct BlueprintFrameAnnotation: Equatable {
     }
 
     public init(
-        text: NSString,
+        text: String,
         size: AnnotationSize = .tiny,
         position: AnnotationPosition = .top,
         alignment: AnnotationAlignment = .leading

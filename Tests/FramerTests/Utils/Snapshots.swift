@@ -12,9 +12,14 @@ struct ReferenceImage {
 
     /// Creates reference image in folder with given name.
     /// The folder will be placed next to current file.
-    /// The image will be named by the name of current test.
-    static func inFolder(named folderName: String, file: StaticString = #filePath, function: StaticString = #function) -> ReferenceImage {
-        return ReferenceImage(path: "\(folderName)/\(function).png", file: file)
+    /// The image will be named by the name of current test and suffixed with `imageFileSuffix`.
+    static func inFolder(
+        named folderName: String,
+        imageFileSuffix: String = "",
+        file: StaticString = #filePath,
+        function: StaticString = #function
+    ) -> ReferenceImage {
+        return ReferenceImage(path: "\(folderName)/\(function)\(imageFileSuffix).png", file: file)
     }
 }
 
@@ -43,8 +48,8 @@ internal func compare(
     } else {
         let oldImageData = try Data(contentsOf: referenceImage.url)
         let oldImage = try XCTUnwrap(UIImage(data: oldImageData), "Failed to read reference image", file: file, line: line)
-        if let difference = compare(oldImage, image, precision: 1, perceptualPrecision: 1) {
-            XCTFail(difference, file: file, line: line)
+        if let difference = compare(oldImage, image, precision: 1, perceptualPrecision: 0.98) {
+            XCTFail("\(difference) (in file: \(referenceImage.url)", file: file, line: line)
         }
     }
 }

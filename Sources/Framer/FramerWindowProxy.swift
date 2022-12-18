@@ -86,7 +86,7 @@ internal class ActiveWindowProxy: FramerWindowProxy {
     /// Renderer displaying Framer's UI Framer's UI.
     internal let renderer: Renderer
     /// An engine processing user actions and invoking renderer (the `window`).
-    private let engine: Engine
+    internal let engine: Engine
 
     /// Initializer.
     /// - Parameters:
