@@ -11,7 +11,7 @@ public protocol FramerWindowProxy {
     func erase(blueprintID: Blueprint.ID)
 
     /// Erases all blueprints in current window.
-    func eraseAll()
+    func eraseAllBlueprints()
 
     /// Adds a button with given `title` which calls provided `action`.
     func addButton(title: String, action: @escaping () -> Void)
@@ -26,7 +26,7 @@ public protocol FramerWindowProxy {
 internal struct NoOpFramerWindowProxy: FramerWindowProxy {
     func draw(blueprint: Blueprint) { reportNoOp()  }
     func erase(blueprintID: Blueprint.ID) { reportNoOp() }
-    func eraseAll() { reportNoOp() }
+    func eraseAllBlueprints() { reportNoOp() }
     func addButton(title: String, action: @escaping () -> Void) { reportNoOp() }
     var bounds: CGRect { .zero }
 
@@ -64,7 +64,7 @@ internal class InactiveWindowProxy: FramerWindowProxy {
         queue.run { self.bufferedActions.append(.erase(blueprintID: blueprintID)) }
     }
 
-    func eraseAll() {
+    func eraseAllBlueprints() {
         queue.run { self.bufferedActions.append(.eraseAllBlueprints) }
     }
 
@@ -122,7 +122,7 @@ internal class ActiveWindowProxy: FramerWindowProxy {
         }
     }
 
-    func eraseAll() {
+    func eraseAllBlueprints() {
         queue.run {
             self.engine.receive(action: .eraseAllBlueprints)
         }

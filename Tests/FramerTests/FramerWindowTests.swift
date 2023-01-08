@@ -253,7 +253,7 @@ internal class FramerWindowTests: XCTestCase {
         try compareWithSnapshot(imageFileSuffix: "-erase2")
 
         // When
-        FramerWindow.current.eraseAll()
+        FramerWindow.current.eraseAllBlueprints()
 
         // Then
         try compareWithSnapshot(imageFileSuffix: "-eraseAll")

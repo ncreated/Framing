@@ -31,7 +31,7 @@ class FramerWindowProxyTests: XCTestCase {
         // When
         proxy.draw(blueprint: blueprint)
         proxy.erase(blueprintID: blueprint.id)
-        proxy.eraseAll()
+        proxy.eraseAllBlueprints()
         proxy.addButton(title: buttonTitle, action: {})
 
         // Then
@@ -71,7 +71,7 @@ class FramerWindowProxyTests: XCTestCase {
         // When
         proxy.draw(blueprint: blueprint)
         proxy.erase(blueprintID: blueprint.id)
-        proxy.eraseAll()
+        proxy.eraseAllBlueprints()
         proxy.addButton(title: buttonTitle, action: {})
 
         // Then

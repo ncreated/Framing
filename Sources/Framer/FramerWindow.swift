@@ -42,13 +42,14 @@ public class FramerWindow {
             // synchronous if the app is already started. If it is not, it will await
             // receiving `didBecomeKeyNotification` and execute asynchronously:
             rendererProvider.getRenderer { renderer in
-                // Last, instantiate the acutal `ActiveWindowProxy` and pass it `InactiveWindowProxy`,
+                // Then, instantiate the acutal `ActiveWindowProxy` and pass it `InactiveWindowProxy`,
                 // so it can replay all actions buffered prior to this moment:
                 FramerWindow.current = ActiveWindowProxy(
                     renderer: renderer,
                     inactiveWindowProxy: inactiveWindow
                 )
 
+                // Last, notify it's ready:
                 callback?()
             }
         }
