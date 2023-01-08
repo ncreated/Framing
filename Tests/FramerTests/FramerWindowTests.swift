@@ -3,27 +3,31 @@ import Framing
 @testable import Framer
 
 @available(iOS 14.0, *)
-private class RendererProviderMock: RendererProvider {
-    let framerView = FramerView(
-        frame: .init(x: 0, y: 0, width: 400, height: 800),
-        renderingQueue: NoQueue()
-    )
+private struct RendererMock: WindowRendererProvider {
+    let view: WindowView
 
-    func getRenderer(_ callback: @escaping (Renderer) -> Void) {
-        callback(framerView)
+    init(size: CGSize) {
+        self.view = WindowView(
+            frame: .init(origin: .zero, size: size),
+            renderingQueue: NoQueue()
+        )
+    }
+
+    func getRenderer(_ callback: @escaping (WindowRenderer) -> Void) {
+        callback(view)
     }
 }
 
 @available(iOS 14.0, *)
 internal class FramerWindowTests: XCTestCase {
     private let recordMode = false
-    private let snapshotsFolderName = "_snapshots_"
-    private var mock: RendererProviderMock!
+    private let snapshotsFolderName = "_FramerWindow_Snapshots_"
+    private var rendererMock: RendererMock!
 
     override func setUp() {
         super.setUp()
-        mock = RendererProviderMock()
-        FramerWindow.rendererProvider = mock
+        rendererMock = RendererMock(size: .init(width: 400, height: 800))
+        FramerWindow.rendererProvider = rendererMock
         FramerWindow.install(queue: NoQueue(), callback: nil)
         FramerWindow.current.forceShowControls()
     }
@@ -31,116 +35,6 @@ internal class FramerWindowTests: XCTestCase {
     override func tearDown() {
         FramerWindow.uninstall()
         super.tearDown()
-    }
-
-    // MARK: - Blueprints
-
-    private let redFrameStyle = BlueprintFrameStyle(
-        lineWidth: 2, lineColor: .red, fillColor: .white, cornerRadius: 10, opacity: 1
-    )
-    private let greenFrameStyle = BlueprintFrameStyle(
-        lineWidth: 2, lineColor: .green, fillColor: .white, cornerRadius: 5, opacity: 0.75
-    )
-    private let blueFrameStyle = BlueprintFrameStyle(
-        lineWidth: 2, lineColor: .blue, fillColor: .white, cornerRadius: 2, opacity: 0.5
-    )
-
-    private let redFrameContent = BlueprintFrameContent(
-        text: "Frame (red)", textColor: .red, font: .systemFont(ofSize: 30)
-    )
-    private let greenFrameContent = BlueprintFrameContent(
-        text: "Frame (green)", textColor: .green, font: .systemFont(ofSize: 20)
-    )
-    private let blueFrameContent = BlueprintFrameContent(
-        text: "Frame (blue)", textColor: .blue, font: .systemFont(ofSize: 10)
-    )
-
-    func testDrawSingleBlueprintWithOneFrame() throws {
-        // Given
-        let frame = Frame(rect: FramerWindow.current.bounds)
-            .inset(top: 40, left: 40, bottom: 40, right: 40)
-
-        var blueprint = Blueprint(
-            id: "blueprint 1",
-            frames: [
-                frame.toBlueprintFrame(
-                    withStyle: redFrameStyle,
-                    content: redFrameContent
-                )
-            ]
-        )
-
-        // When
-        FramerWindow.current.draw(blueprint: blueprint)
-
-        // Then
-        try compareWithSnapshot(imageFileSuffix: "-noAnnotations")
-
-        let alignments: [(String, BlueprintFrameAnnotation.AnnotationAlignment)] = [
-            ("L", .leading),
-            ("C", .center),
-            ("T", .trailing),
-        ]
-        let positions: [(String, BlueprintFrameAnnotation.AnnotationPosition)] = [
-            ("T", .top),
-            ("B", .bottom),
-            ("L", .left),
-            ("R", .right),
-        ]
-        let sizes: [(String, BlueprintFrameAnnotation.AnnotationSize)] = [
-            ("T", .tiny),
-            ("S", .small),
-            ("N", .normal),
-            ("L", .large),
-        ]
-
-        for alignment in alignments {
-            for position in positions {
-                for size in sizes {
-                    // When
-                    blueprint.frames[0].annotation = .init(
-                        text: "Annotation (size: \(size.0), position: \(position.0), alignment: \(alignment.0)",
-                        size: size.1,
-                        position: position.1,
-                        alignment: alignment.1
-                    )
-                    FramerWindow.current.draw(blueprint: blueprint)
-
-                    // Then
-                    try compareWithSnapshot(imageFileSuffix: "-annotation\(size.0)\(position.0)\(alignment.0)")
-                }
-            }
-        }
-    }
-
-    func testDrawSingleBlueprintWithMultipleFrames() throws {
-        let container = Frame(rect: FramerWindow.current.bounds)
-            .inset(top: 40, left: 40, bottom: 40, right: 40)
-
-        // Given
-        let frame1 = Frame(ofSize: .init(width: 200, height: 200))
-            .putInside(container, alignTo: .topLeft)
-        let frame2 = Frame(ofSize: .init(width: 200, height: 200))
-            .putInside(container, alignTo: .topLeft)
-            .offsetBy(x: 50, y: 50)
-        let frame3 = Frame(ofSize: .init(width: 200, height: 200))
-            .putInside(container, alignTo: .topLeft)
-            .offsetBy(x: 100, y: 100)
-
-        // When
-        FramerWindow.current.draw(
-            blueprint: Blueprint(
-                id: "blueprint 1",
-                frames: [
-                    frame1.toBlueprintFrame(withStyle: redFrameStyle, content: redFrameContent),
-                    frame2.toBlueprintFrame(withStyle: greenFrameStyle, content: greenFrameContent),
-                    frame3.toBlueprintFrame(withStyle: blueFrameStyle, content: blueFrameContent),
-                ]
-            )
-        )
-
-        // Then
-        try compareWithSnapshot()
     }
 
     func testDrawMultipleBlueprintsAndToggleTheirVisibility() throws {
@@ -180,10 +74,7 @@ internal class FramerWindowTests: XCTestCase {
             blueprint: Blueprint(
                 id: "blueprint 3",
                 frames: [
-                    frame3.toBlueprintFrame(
-                        withStyle: blueFrameStyle,
-                        content: blueFrameContent
-                    ),
+                    frame3.toBlueprintFrame(withStyle: blueFrameStyle, content: blueFrameContent),
                 ]
             )
         )
@@ -203,60 +94,6 @@ internal class FramerWindowTests: XCTestCase {
 
         // Then
         try compareWithSnapshot(imageFileSuffix: "-hide1")
-    }
-
-    func testEraseBlueprint() throws {
-        let container = Frame(rect: FramerWindow.current.bounds)
-            .inset(top: 40, left: 40, bottom: 40, right: 40)
-
-        // Given
-        let frame1 = Frame(ofSize: .init(width: 200, height: 200))
-            .putInside(container, alignTo: .topLeft)
-        let frame2 = Frame(ofSize: .init(width: 200, height: 200))
-            .putInside(container, alignTo: .topLeft)
-            .offsetBy(x: 50, y: 50)
-        let frame3 = Frame(ofSize: .init(width: 200, height: 200))
-            .putInside(container, alignTo: .topLeft)
-            .offsetBy(x: 100, y: 100)
-
-        FramerWindow.current.draw(
-            blueprint: Blueprint(
-                id: "blueprint 1",
-                frames: [
-                    frame1.toBlueprintFrame(withStyle: redFrameStyle, content: redFrameContent),
-                ]
-            )
-        )
-
-        FramerWindow.current.draw(
-            blueprint: Blueprint(
-                id: "blueprint 2",
-                frames: [
-                    frame2.toBlueprintFrame(withStyle: greenFrameStyle, content: greenFrameContent),
-                ]
-            )
-        )
-
-        FramerWindow.current.draw(
-            blueprint: Blueprint(
-                id: "blueprint 3",
-                frames: [
-                    frame3.toBlueprintFrame(withStyle: blueFrameStyle, content: blueFrameContent),
-                ]
-            )
-        )
-
-        // When
-        FramerWindow.current.erase(blueprintID: "blueprint 2")
-
-        // Then
-        try compareWithSnapshot(imageFileSuffix: "-erase2")
-
-        // When
-        FramerWindow.current.eraseAllBlueprints()
-
-        // Then
-        try compareWithSnapshot(imageFileSuffix: "-eraseAll")
     }
 
     func testAddButtons() throws {
@@ -291,7 +128,7 @@ internal class FramerWindowTests: XCTestCase {
         line: UInt = #line
     ) throws {
         try compare(
-            image: mock.framerView.takeImage(),
+            image: rendererMock.view.takeImage(),
             referenceImage: .inFolder(
                 named: snapshotsFolderName,
                 imageFileSuffix: imageFileSuffix,
@@ -309,18 +146,18 @@ internal class FramerWindowTests: XCTestCase {
 
 private extension FramerWindow {
     static func uninstall() {
-        current = NoOpFramerWindowProxy()
+        current = NoOpWindowController()
     }
 }
 
 @available(iOS 14.0, *)
-private extension FramerWindowProxy {
+private extension FramerWindowController {
     func forceShowControls(file: StaticString = #filePath, line: UInt = #line) {
-        guard let activeWindow = self as? ActiveWindowProxy else {
-            XCTFail("Expected `ActiveWindowProxy` got \(type(of: self))", file: file, line: line)
+        guard let activeWindow = self as? ActiveWindowController else {
+            XCTFail("Expected `ActiveWindowController` got \(type(of: self))", file: file, line: line)
             return
         }
-        activeWindow.engine.receive(action: .changeControlsState(show: true))
+        activeWindow.renderer.onAction?(.changeControlsState(show: true))
     }
 
     func forceChangeBlueprintVisibility(
@@ -329,10 +166,10 @@ private extension FramerWindowProxy {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        guard let activeWindow = self as? ActiveWindowProxy else {
-            XCTFail("Expected `ActiveWindowProxy` got \(type(of: self))", file: file, line: line)
+        guard let activeWindow = self as? ActiveWindowController else {
+            XCTFail("Expected `ActiveWindowController` got \(type(of: self))", file: file, line: line)
             return
         }
-        activeWindow.engine.receive(action: .changeBlueprintVisibility(blueprintID: blueprintID, newVisibility: newVisibility))
+        activeWindow.renderer.onAction?(.changeBlueprintVisibility(blueprintID: blueprintID, newVisibility: newVisibility))
     }
 }

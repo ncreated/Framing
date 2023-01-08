@@ -14,10 +14,14 @@ extension Blueprint: AnyMockable, RandomMockable {
         )
     }
 
-    static func mockRandomWith(id: String) -> Blueprint {
+    static func mockRandomWith(blueprintID: ID) -> Blueprint {
         var random: Blueprint = .mockRandom()
-        random.id = .init(stringLiteral: id)
+        random.id = blueprintID
         return random
+    }
+
+    static func mockRandomWith(id: String) -> Blueprint {
+        return mockRandomWith(blueprintID: .init(stringLiteral: id))
     }
 
     static func mockWith(

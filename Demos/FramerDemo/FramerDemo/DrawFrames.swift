@@ -36,7 +36,7 @@ func frameIt() {
             .putInside(container, alignTo: alignment)
     }
 
-    FramerWindow.current.eraseAll()
+    FramerWindow.current.eraseAllBlueprints()
 
     frames.forEach { frame in
         let rect = "(\(pretty(frame.minX)), \(pretty(frame.minY)), \(pretty(frame.width)), \(pretty(frame.height)))"
