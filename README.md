@@ -2,15 +2,61 @@
 <img width="180" alt="framing-logo" src="https://cloud.githubusercontent.com/assets/2358722/20908023/2604621e-bb52-11e6-8616-456d85f4be77.png">
 </p>
 
+# Framer
+
+<p align="center">
+<img width="300" alt="framer screenshot" src="https://user-images.githubusercontent.com/2358722/219977900-629bad4a-ecaa-4665-ac7f-b19361ed71cb.png">
+</p>
+
+```swift
+import SwiftUI
+import Framer
+
+struct HelloFramerView: View {
+    init() {
+        FramerWindow.install(startHidden: false)
+    }
+
+    var body: some View {
+        ZStack {
+            Color("FCFFE7")
+                .ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Framer")
+                    .font(.system(size: 40, weight: .bold))
+                    .foregroundColor(Color("EB455F"))
+                    .frameIt("Title")
+                Text("What is Framer?")
+                    .font(.headline)
+                    .frameIt("Headline")
+                Text("Framer is a basic canvas for drawing \"blueprints\" on. It can be rendered to standalone image or displayed in overlay window.")
+                    .font(.body)
+                    .frameIt("Body")
+                HStack {
+                    Spacer()
+                    .frameIt("Spacer")
+                    Image(systemName: "photo.artframe")
+                        .resizable(resizingMode: .stretch)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 40, maxHeight: 40)
+                        .foregroundColor(Color("2B3467"))
+                }
+            }
+            .frameIt(
+                "VStack",
+                 frameStyle: .init(lineColor: .blue),
+                 annotationStyle: .init(position: .bottom, alignment: .center)
+            )
+            .padding(40)
+            .fontDesign(.monospaced)
+        }
+    }
+}
+```
+
 # Framing
 Swifty approach to defining frame layouts.
-
-## Installation
-
-`Framing` supports CocoaPods:
-```
-pod 'Framing'
-```
 
 ## What is `Framing`?
 
