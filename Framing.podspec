@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.author             = "Maciek Grzybowski"
   s.social_media_url   = "http://twitter.com/ncreated"
 
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "11.0"
 
   s.source       = { :git => "https://github.com/ncreated/Framing.git", :tag => "#{s.version}" }
-  s.source_files  = "Framing/*.swift"
+  s.source_files  = "Sources/Framing/*.swift"
 end

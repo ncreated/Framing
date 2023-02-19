@@ -46,3 +46,4 @@ fastlane/*/report*
 # Carthage/Checkouts
 
 Carthage/Build
+.swiftpm
