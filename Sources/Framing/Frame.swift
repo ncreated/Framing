@@ -35,7 +35,7 @@ public struct Frame {
     }
     
     public init(rect: CGRect) {
-        self.init(x: rect.origin.x, y: rect.origin.y, width: rect.width, height: rect.height)
+        self.init(x: rect.origin.x, y: rect.origin.y, width: rect.size.width, height: rect.size.height)
     }
 
     // MARK: Relative position
@@ -295,7 +295,7 @@ public struct Frame {
     // MARK: CGGeometry conversion
     
     public var rect: CGRect {
-        return CGRect(x: x, y: y, width: width, height: height)
+        return CGRect(origin: .init(x: x, y: y), size: size)
     }
     
     public var size: CGSize {
