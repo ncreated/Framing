@@ -7,14 +7,19 @@ Swifty approach to defining frame layouts.
 
 ## Installation
 
-`Framing` supports CocoaPods:
+SPM:
+```
+.package(url: "https://github.com/ncreated/Framing.git", from: "1.0.0"),
+```
+
+CocoaPods:
 ```
 pod 'Framing'
 ```
 
 ## What is `Framing`?
 
-`Framing` is a tiny framework for defining view frames in more Swifty way. Think of it as a simple wrapper over `CGRect` that can save you time spend on math calculations when positioning view frames. Look:
+`Framing` is a tiny framework for defining view frames in more Swifty way. Think of it as a simple wrapper over `CGRect` that can save you time spend on math calculations when positioning view frames:
 
 ```swift
 let background = Frame(width: 300, height: 300)
@@ -35,8 +40,7 @@ let F2 = Frame(width: 70, height: 50)
 let F3 = F2.offsetBy(y: 70)
 ```
 
-Every `Frame` provides `.rect` property that returns `CGRect` for `UIView`.
-e.g. `greenView.frame = bottomLine2.rect`
+The `Frame` has a `.rect` property that returns `CGRect` that can be used for `UIView` (e.g. `greenView.frame = bottomLine2.rect`).
 
 <p align="center">
 <img width="300" alt="framing-logo-framed" src="https://cloud.githubusercontent.com/assets/2358722/20908037/377e563a-bb52-11e6-8822-20788d21b311.png">
@@ -91,7 +95,7 @@ The same for rows:
 frame.divideIntoEqual(rows: 5, take: 1)
 ```
 
-It's possible to apply transforms conditionally using only `Framing` api:
+It's also possible to apply transforms conditionally:
 ```swift
 let shouldBeOffsetted: Bool = ...
 frame.if(condition: shouldBeOffsetted,
@@ -105,9 +109,6 @@ frame.inset(top: 5)
 
 ---
 Missing some API? Open a Pull Request or fill in the Issue.
-
-## `Framing` is still in development
-This library is still in development, so incompatible API changes are possible until it reaches `1.0.0`.
 
 ## License
 
